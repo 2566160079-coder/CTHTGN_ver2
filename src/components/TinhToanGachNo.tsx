@@ -57,6 +57,7 @@ export const TinhToanGachNo: React.FC<TinhToanGachNoProps> = ({ onBack }) => {
             ref: txData[0].ref,
             date: txData[0].date,
             amount: txData[0].amount.toLocaleString(),
+            rawAmount: txData[0].amount,
             desc: txData[0].description,
             bank: txData[0].bank,
             acc: txData[0].account,
@@ -146,7 +147,7 @@ export const TinhToanGachNo: React.FC<TinhToanGachNoProps> = ({ onBack }) => {
   const totalDebtStart = selectedSubs.reduce((acc, sub) => acc + (sub.debtStart || 0), 0);
   const totalDebtCurrent = selectedSubs.reduce((acc, sub) => acc + (sub.debtCurrent || 0), 0);
 
-  const transactionAmount = transaction ? parseInt(transaction.amount.replace(/,/g, '')) : 0;
+  const transactionAmount = transaction ? (transaction.rawAmount || 0) : 0;
   const adjustmentAmount = parseInt(adjustment) || 0;
   const totalPayment = transactionAmount + adjustmentAmount;
 
@@ -379,7 +380,7 @@ export const TinhToanGachNo: React.FC<TinhToanGachNoProps> = ({ onBack }) => {
                 </div>
               </div>
               
-              <p className="text-xs text-slate-400 mt-4 italic">Số tiền từ giao dịch sổ phụ</p>
+              <p className="text-xs text-slate-400 mt-4 italic">(= {transaction.amount} + {adjustmentAmount.toLocaleString()})</p>
             </div>
             {/* Nợ đầu kỳ */}
             <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden">
