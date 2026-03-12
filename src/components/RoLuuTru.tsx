@@ -24,6 +24,8 @@ export const RoLuuTru: React.FC<RoLuuTruProps> = ({ onSelectProcess }) => {
     { id: 1, ref: 'REF001', date: '20/10/2023', amount: '+10,000,000', acc: '123456789', name: 'Nguyễn Văn A', bank: 'Vietcombank', desc: 'Thanh toán cước viễn thông tháng 10/2023 cho các thuê bao gia đình khu vực Hà Nội', status: 'Chờ xử lý', user: 'Chưa phân công' },
     { id: 2, ref: 'REF002', date: '20/10/2023', amount: '+5,500,000', acc: '987654321', name: 'Trần Thị B', bank: 'Techcombank', desc: 'Thanh toán hóa đơn internet định kỳ tháng 10. Giao dịch qua cổng thanh toán NAPAS.', status: 'Đang xử lý', user: 'Lê Văn C' },
     { id: 3, ref: 'REF003', date: '19/10/2023', amount: '+2,000,000', acc: '456123789', name: 'Công ty X', bank: 'BIDV', desc: 'Chuyển tiền thanh toán hợp đồng cung cấp dịch vụ phần mềm quản lý doanh nghiệp ERP.', status: 'Chờ xử lý', user: 'Chưa phân công' },
+    { id: 4, ref: 'REF004', date: '18/10/2023', amount: '+1,250,000', acc: '1122334455', name: 'Phạm Văn D', bank: 'Agribank', desc: 'TT cuoc di dong thang 10', status: 'Chờ xử lý', user: 'Chưa phân công' },
+    { id: 5, ref: 'REF005', date: '18/10/2023', amount: '+8,900,000', acc: '5566778899', name: 'Hoàng Thị E', bank: 'MB Bank', desc: 'Thanh toan cuoc vien thong cho doanh nghiep', status: 'Đang xử lý', user: 'Trần Thị D' },
   ];
 
   return (
@@ -91,10 +93,10 @@ export const RoLuuTru: React.FC<RoLuuTruProps> = ({ onSelectProcess }) => {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200">
-                <th className="px-4 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">STT</th>
+                <th className="px-4 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">STT</th>
                 <th className="px-4 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Số tham chiếu</th>
                 <th className="px-4 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Ngày giao dịch</th>
-                <th className="px-4 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Phát sinh có (VND)</th>
+                <th className="px-4 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Phát sinh có (VND)</th>
                 <th className="px-4 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tài khoản đối ứng</th>
                 <th className="px-4 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tên đối ứng</th>
                 <th className="px-4 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Ngân hàng đối ứng</th>
@@ -111,10 +113,10 @@ export const RoLuuTru: React.FC<RoLuuTruProps> = ({ onSelectProcess }) => {
                   className={`hover:bg-slate-50/50 transition-colors cursor-pointer ${row.status === 'Đang xử lý' ? 'bg-blue-50/30' : ''}`}
                   onClick={() => setSelectedTransaction(row)}
                 >
-                  <td className="px-4 py-4 text-sm text-slate-500">{i + 1}</td>
+                  <td className="px-4 py-4 text-sm text-slate-500 text-right">{i + 1}</td>
                   <td className="px-4 py-4 text-sm font-semibold text-[#19355c]">{row.ref}</td>
                   <td className="px-4 py-4 text-sm">{row.date}</td>
-                  <td className="px-4 py-4 text-sm font-bold text-green-600">{row.amount}</td>
+                  <td className="px-4 py-4 text-sm font-bold text-green-600 text-right">{row.amount}</td>
                   <td className="px-4 py-4 text-sm font-mono">{row.acc}</td>
                   <td className="px-4 py-4 text-sm font-medium">{row.name}</td>
                   <td className="px-4 py-4 text-sm text-slate-600">{row.bank}</td>

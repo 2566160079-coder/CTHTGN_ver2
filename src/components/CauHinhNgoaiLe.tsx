@@ -40,6 +40,9 @@ export const CauHinhNgoaiLe: React.FC = () => {
   const rules = [
     { id: 1, name: 'Ngoại lệ lọc phí ngân hàng', status: 'Hiệu lực', active: true },
     { id: 2, name: 'Ngoại lệ gạch nợ tiền thừa', status: 'Không hiệu lực', active: false },
+    { id: 3, name: 'Ngoại lệ phí duy trì tài khoản', status: 'Hiệu lực', active: true },
+    { id: 4, name: 'Ngoại lệ hoàn trả giao dịch lỗi', status: 'Hiệu lực', active: true },
+    { id: 5, name: 'Ngoại lệ thanh toán qua ví điện tử', status: 'Không hiệu lực', active: false },
   ];
 
   const handleReset = () => {

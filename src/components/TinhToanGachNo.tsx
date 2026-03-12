@@ -441,7 +441,7 @@ export const TinhToanGachNo: React.FC<TinhToanGachNoProps> = ({ onBack }) => {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-slate-50 text-slate-500 uppercase text-[10px] font-bold tracking-wider">
-                    <th className="px-6 py-3 border-b border-slate-200">STT</th>
+                    <th className="px-6 py-3 border-b border-slate-200 text-right">STT</th>
                     <th className="px-6 py-3 border-b border-slate-200">STB</th>
                     <th className="px-6 py-3 border-b border-slate-200">Cus_ID</th>
                     <th className="px-6 py-3 border-b border-slate-200">Họ khách hàng</th>
@@ -453,7 +453,7 @@ export const TinhToanGachNo: React.FC<TinhToanGachNoProps> = ({ onBack }) => {
                 <tbody className="text-sm divide-y divide-slate-200">
                   {subscribers.map((sub) => (
                     <tr key={sub.id} className="hover:bg-slate-50/50 transition-colors">
-                      <td className="px-6 py-4">{sub.id}</td>
+                      <td className="px-6 py-4 text-right">{sub.id}</td>
                       <td className="px-6 py-4 font-bold text-[#19355c]">{sub.subId}</td>
                       <td className="px-6 py-4 text-slate-600 font-medium">{sub.cusId}</td>
                       <td className="px-6 py-4 font-bold">{sub.name}</td>

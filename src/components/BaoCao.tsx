@@ -51,9 +51,9 @@ const miniBarData = [
 ];
 
 const employeeData = [
-  { id: 'NL', name: 'Nguyễn Văn Linh', total: 156, completed: 144, pending: 12, amount: '450,200,000 đ' },
-  { id: 'TH', name: 'Trần Thị Hoa', total: 203, completed: 203, pending: 0, amount: '580,000,000 đ' },
-  { id: 'LM', name: 'Lê Minh', total: 89, completed: 84, pending: 5, amount: '220,500,000 đ' },
+  { id: 'NL', name: 'Nguyễn Văn Linh', total: 156, completed: 144, pending: 12, amount: 450200000, credit: 445000000, adjustment: 5200000, payment: 450200000 },
+  { id: 'TH', name: 'Trần Thị Hoa', total: 203, completed: 203, pending: 0, amount: 580000000, credit: 580000000, adjustment: 0, payment: 580000000 },
+  { id: 'LM', name: 'Lê Minh', total: 89, completed: 84, pending: 5, amount: 220500000, credit: 221000000, adjustment: -500000, payment: 220500000 },
 ];
 
 const pieData = [
@@ -64,31 +64,36 @@ const pieData = [
 ];
 
 const dailyData = [
-  { date: '24/10', total: 448, completed: 431, pending: 17, amount: '1,250,800,000 đ' },
-  { date: '23/10', total: 512, completed: 502, pending: 10, amount: '1,410,200,000 đ' },
-  { date: '22/10', total: 390, completed: 382, pending: 8, amount: '985,400,000 đ' },
+  { date: '24/10', total: 448, completed: 431, pending: 17, amount: 1250800000, credit: 1245000000, adjustment: 5800000, payment: 1250800000 },
+  { date: '23/10', total: 512, completed: 502, pending: 10, amount: 1410200000, credit: 1410200000, adjustment: 0, payment: 1410200000 },
+  { date: '22/10', total: 390, completed: 382, pending: 8, amount: 985400000, credit: 986000000, adjustment: -600000, payment: 985400000 },
 ];
 
 export const BaoCao: React.FC = () => {
   const [exportTypeEmp, setExportTypeEmp] = React.useState<'summary' | 'detail'>('summary');
   const [exportTypeDay, setExportTypeDay] = React.useState<'summary' | 'detail'>('summary');
 
-  const parseAmount = (amountStr: string) => parseInt(amountStr.replace(/[^\d]/g, '') || '0');
-  const formatAmount = (amount: number) => new Intl.NumberFormat('vi-VN').format(amount) + ' đ';
+  const formatAmount = (amount: number) => new Intl.NumberFormat('vi-VN').format(amount);
 
   const employeeTotals = employeeData.reduce((acc, row) => ({
     total: acc.total + row.total,
     completed: acc.completed + row.completed,
     pending: acc.pending + row.pending,
-    amount: acc.amount + parseAmount(row.amount)
-  }), { total: 0, completed: 0, pending: 0, amount: 0 });
+    amount: acc.amount + row.amount,
+    credit: acc.credit + row.credit,
+    adjustment: acc.adjustment + row.adjustment,
+    payment: acc.payment + row.payment
+  }), { total: 0, completed: 0, pending: 0, amount: 0, credit: 0, adjustment: 0, payment: 0 });
 
   const dailyTotals = dailyData.reduce((acc, row) => ({
     total: acc.total + row.total,
     completed: acc.completed + row.completed,
     pending: acc.pending + row.pending,
-    amount: acc.amount + parseAmount(row.amount)
-  }), { total: 0, completed: 0, pending: 0, amount: 0 });
+    amount: acc.amount + row.amount,
+    credit: acc.credit + row.credit,
+    adjustment: acc.adjustment + row.adjustment,
+    payment: acc.payment + row.payment
+  }), { total: 0, completed: 0, pending: 0, amount: 0, credit: 0, adjustment: 0, payment: 0 });
 
   return (
     <div className="space-y-8 pb-10">
@@ -319,10 +324,13 @@ export const BaoCao: React.FC = () => {
               <thead className="bg-slate-50 text-[#19355c] text-[10px] font-bold uppercase tracking-wider">
                 <tr>
                   <th className="px-6 py-4">Nhân viên</th>
-                  <th className="px-6 py-4">Tổng giao dịch</th>
-                  <th className="px-6 py-4">Hoàn thành</th>
-                  <th className="px-6 py-4">Treo</th>
-                  <th className="px-6 py-4">Tổng tiền đã gạch</th>
+                  <th className="px-6 py-4 text-right">Tổng giao dịch</th>
+                  <th className="px-6 py-4 text-right">Hoàn thành</th>
+                  <th className="px-6 py-4 text-right">Treo</th>
+                  <th className="px-6 py-4 text-right">Tổng tiền đã gạch (VND)</th>
+                  <th className="px-6 py-4 text-right">Phát sinh có (VND)</th>
+                  <th className="px-6 py-4 text-right">Số tiền điều chỉnh (VND)</th>
+                  <th className="px-6 py-4 text-right">Số tiền thanh toán (VND)</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-sm">
@@ -338,26 +346,32 @@ export const BaoCao: React.FC = () => {
                         {row.name}
                       </div>
                     </td>
-                    <td className="px-6 py-4 font-semibold text-slate-700">{row.total}</td>
-                    <td className="px-6 py-4 text-emerald-600 font-bold">{row.completed}</td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 font-semibold text-slate-700 text-right">{row.total}</td>
+                    <td className="px-6 py-4 text-emerald-600 font-bold text-right">{row.completed}</td>
+                    <td className="px-6 py-4 text-right">
                       <span className={`px-2 py-1 rounded text-[10px] font-bold ${
                         row.pending > 0 ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
                       }`}>
                         {row.pending} GD
                       </span>
                     </td>
-                    <td className="px-6 py-4 font-bold text-[#19355c]">{row.amount}</td>
+                    <td className="px-6 py-4 font-bold text-[#19355c] text-right">{formatAmount(row.amount)}</td>
+                    <td className="px-6 py-4 font-bold text-slate-700 text-right">{formatAmount(row.credit)}</td>
+                    <td className="px-6 py-4 font-bold text-amber-600 text-right">{formatAmount(row.adjustment)}</td>
+                    <td className="px-6 py-4 font-bold text-emerald-600 text-right">{formatAmount(row.payment)}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot className="bg-slate-50 border-t-2 border-slate-200">
                 <tr className="text-sm font-bold text-[#19355c]">
                   <td className="px-6 py-4">TỔNG CỘNG</td>
-                  <td className="px-6 py-4">{employeeTotals.total}</td>
-                  <td className="px-6 py-4 text-emerald-600">{employeeTotals.completed}</td>
-                  <td className="px-6 py-4 text-amber-600">{employeeTotals.pending} GD</td>
-                  <td className="px-6 py-4">{formatAmount(employeeTotals.amount)}</td>
+                  <td className="px-6 py-4 text-right">{employeeTotals.total}</td>
+                  <td className="px-6 py-4 text-emerald-600 text-right">{employeeTotals.completed}</td>
+                  <td className="px-6 py-4 text-amber-600 text-right">{employeeTotals.pending} GD</td>
+                  <td className="px-6 py-4 text-right">{formatAmount(employeeTotals.amount)}</td>
+                  <td className="px-6 py-4 text-right">{formatAmount(employeeTotals.credit)}</td>
+                  <td className="px-6 py-4 text-amber-600 text-right">{formatAmount(employeeTotals.adjustment)}</td>
+                  <td className="px-6 py-4 text-emerald-600 text-right">{formatAmount(employeeTotals.payment)}</td>
                 </tr>
               </tfoot>
             </table>
@@ -459,30 +473,39 @@ export const BaoCao: React.FC = () => {
               <thead className="bg-slate-50 text-[#19355c] text-[10px] font-bold uppercase tracking-wider">
                 <tr>
                   <th className="px-6 py-4">Ngày</th>
-                  <th className="px-6 py-4">Tổng giao dịch</th>
-                  <th className="px-6 py-4">Hoàn thành</th>
-                  <th className="px-6 py-4">Treo</th>
-                  <th className="px-6 py-4">Tổng tiền đã gạch</th>
+                  <th className="px-6 py-4 text-right">Tổng giao dịch</th>
+                  <th className="px-6 py-4 text-right">Hoàn thành</th>
+                  <th className="px-6 py-4 text-right">Treo</th>
+                  <th className="px-6 py-4 text-right">Tổng tiền đã gạch (VND)</th>
+                  <th className="px-6 py-4 text-right">Phát sinh có (VND)</th>
+                  <th className="px-6 py-4 text-right">Số tiền điều chỉnh (VND)</th>
+                  <th className="px-6 py-4 text-right">Số tiền thanh toán (VND)</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-sm">
                 {dailyData.map((row, i) => (
                   <tr key={i} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-4 font-bold text-slate-700">{row.date}</td>
-                    <td className="px-6 py-4 font-semibold text-slate-600">{row.total}</td>
-                    <td className="px-6 py-4 text-emerald-600 font-bold">{row.completed}</td>
-                    <td className="px-6 py-4 text-amber-600 font-bold">{row.pending}</td>
-                    <td className="px-6 py-4 font-bold text-[#19355c]">{row.amount}</td>
+                    <td className="px-6 py-4 font-semibold text-slate-600 text-right">{row.total}</td>
+                    <td className="px-6 py-4 text-emerald-600 font-bold text-right">{row.completed}</td>
+                    <td className="px-6 py-4 text-amber-600 font-bold text-right">{row.pending}</td>
+                    <td className="px-6 py-4 font-bold text-[#19355c] text-right">{formatAmount(row.amount)}</td>
+                    <td className="px-6 py-4 font-bold text-slate-700 text-right">{formatAmount(row.credit)}</td>
+                    <td className="px-6 py-4 font-bold text-amber-600 text-right">{formatAmount(row.adjustment)}</td>
+                    <td className="px-6 py-4 font-bold text-emerald-600 text-right">{formatAmount(row.payment)}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot className="bg-slate-50 border-t-2 border-slate-200">
                 <tr className="text-sm font-bold text-[#19355c]">
                   <td className="px-6 py-4">TỔNG CỘNG</td>
-                  <td className="px-6 py-4">{dailyTotals.total}</td>
-                  <td className="px-6 py-4 text-emerald-600">{dailyTotals.completed}</td>
-                  <td className="px-6 py-4 text-amber-600">{dailyTotals.pending}</td>
-                  <td className="px-6 py-4">{formatAmount(dailyTotals.amount)}</td>
+                  <td className="px-6 py-4 text-right">{dailyTotals.total}</td>
+                  <td className="px-6 py-4 text-emerald-600 text-right">{dailyTotals.completed}</td>
+                  <td className="px-6 py-4 text-amber-600 text-right">{dailyTotals.pending}</td>
+                  <td className="px-6 py-4 text-right">{formatAmount(dailyTotals.amount)}</td>
+                  <td className="px-6 py-4 text-right">{formatAmount(dailyTotals.credit)}</td>
+                  <td className="px-6 py-4 text-amber-600 text-right">{formatAmount(dailyTotals.adjustment)}</td>
+                  <td className="px-6 py-4 text-emerald-600 text-right">{formatAmount(dailyTotals.payment)}</td>
                 </tr>
               </tfoot>
             </table>

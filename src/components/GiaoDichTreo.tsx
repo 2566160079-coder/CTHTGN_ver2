@@ -87,6 +87,36 @@ export const GiaoDichTreo: React.FC<GiaoDichTreoProps> = ({ onSelectProcess }) =
       hangNote: 'Trùng số tham chiếu',
       processNote: 'Đang đối soát'
     },
+    { 
+      id: 5, 
+      ref: 'FT2301045600', 
+      date: '17/10/2023', 
+      amount: '15.000.000', 
+      account: '0071001234567',
+      name: 'VO VAN F',
+      bank: 'Vietcombank', 
+      description: 'Thanh toan cuoc internet thang 10',
+      time: '09:00:00',
+      user: 'Tran Thị B',
+      status: 'Chờ xử lý',
+      hangNote: 'Sai mã khách hàng',
+      processNote: 'Chờ bổ sung thông tin'
+    },
+    { 
+      id: 6, 
+      ref: 'FT2301045605', 
+      date: '17/10/2023', 
+      amount: '2.500.000', 
+      account: '12010000123456',
+      name: 'LE VAN G',
+      bank: 'BIDV', 
+      description: 'TT cuoc di dong',
+      time: '10:30:00',
+      user: 'Le Van C',
+      status: 'Đang xử lý',
+      hangNote: 'Lỗi hệ thống core',
+      processNote: 'Đang xử lý lại'
+    },
   ];
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -168,7 +198,7 @@ export const GiaoDichTreo: React.FC<GiaoDichTreoProps> = ({ onSelectProcess }) =
           <table className="w-full text-left border-collapse min-w-[1600px]">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200">
-                <th className="px-4 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap">STT</th>
+                <th className="px-4 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap text-right">STT</th>
                 <th className="px-4 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap">Số tham chiếu</th>
                 <th className="px-4 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap">Ngày giao dịch</th>
                 <th className="px-4 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap text-right">Phát sinh có (VND)</th>
@@ -187,7 +217,7 @@ export const GiaoDichTreo: React.FC<GiaoDichTreoProps> = ({ onSelectProcess }) =
             <tbody className="divide-y divide-slate-200">
               {transactions.map((row, i) => (
                 <tr key={i} className="hover:bg-slate-50 transition-colors">
-                  <td className="px-4 py-4 text-sm text-slate-500">{i + 1}</td>
+                  <td className="px-4 py-4 text-sm text-slate-500 text-right">{i + 1}</td>
                   <td className="px-4 py-4 text-sm font-mono font-medium text-[#19355c]">{row.ref}</td>
                   <td className="px-4 py-4 text-sm text-slate-600">{row.date}</td>
                   <td className="px-4 py-4 text-sm font-bold text-slate-900 text-right">{row.amount}</td>

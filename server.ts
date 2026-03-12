@@ -78,10 +78,23 @@ if (txCount.count === 0) {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run('REF667788990', '28/05/2024', 1500000, 'THANH TOAN CUOC - SAI SO THUE BAO', 'Sacombank', '060123456789', 'VO VAN F', 'ON_HOLD', 'Sai số thuê bao');
 
+  db.prepare(`
+    INSERT INTO transactions (ref, date, amount, description, bank, account, name, status, note)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run('REF778899001', '29/05/2024', 850000, 'THANH TOAN CUOC INTERNET THANG 5', 'VIB', '601704061234567', 'DANG THI G', 'PENDING', null);
+
+  db.prepare(`
+    INSERT INTO transactions (ref, date, amount, description, bank, account, name, status, note)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run('REF889900112', '29/05/2024', 12000000, 'THANH TOAN CUOC DOANH NGHIEP - MA KH: KH-001', 'TPBank', '00001234567', 'CONG TY TNHH ABC', 'PENDING', null);
+
   db.prepare(`INSERT INTO customers (id, name, tax_id) VALUES (?, ?, ?)`).run('KH-992031', 'NGUYEN VAN HOANG ANH', '0102030405');
+  db.prepare(`INSERT INTO customers (id, name, tax_id) VALUES (?, ?, ?)`).run('KH-001', 'CONG TY TNHH ABC', '0101010101');
   
   db.prepare(`INSERT INTO subscribers (id, customer_id, phone_number, debt_start, debt_current) VALUES (?, ?, ?, ?, ?)`).run('SUB-01', 'KH-992031', '0901234567', 3000000, 3500000);
   db.prepare(`INSERT INTO subscribers (id, customer_id, phone_number, debt_start, debt_current) VALUES (?, ?, ?, ?, ?)`).run('SUB-02', 'KH-992031', '0907654321', 1250000, 2300000);
+  db.prepare(`INSERT INTO subscribers (id, customer_id, phone_number, debt_start, debt_current) VALUES (?, ?, ?, ?, ?)`).run('SUB-03', 'KH-001', '0912345678', 5000000, 6000000);
+  db.prepare(`INSERT INTO subscribers (id, customer_id, phone_number, debt_start, debt_current) VALUES (?, ?, ?, ?, ?)`).run('SUB-04', 'KH-001', '0918765432', 7000000, 8000000);
 }
 
 async function startServer() {
